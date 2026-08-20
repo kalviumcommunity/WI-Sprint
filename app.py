@@ -98,6 +98,9 @@ f_project = st.sidebar.multiselect("Project", proj_options)
 f_employee = st.sidebar.multiselect("Employee", emp_options)
 f_month = st.sidebar.multiselect("Month", month_options)
 
+st.sidebar.divider()
+threshold = st.sidebar.slider("Underutilization threshold (%)", min_value=0, max_value=100, value=70, step=5)
+
 filtered = timesheets.copy()
 if f_department:
     filtered = filtered[filtered["department"].isin(f_department)]
@@ -142,6 +145,13 @@ k3.metric("Total Non-Billable Hours", f"{non_billable_hours:,.1f}")
 k4.metric("Employee Utilization", f"{utilization_pct:,.1f}%")
 k5.metric("Total Revenue", f"${total_revenue:,.0f}")
 
+review_hours = float(filtered.loc[filtered["needs_review"], "hours"].sum())
+if review_hours > 0:
+    st.caption(
+        f"⚠ {review_hours:,.1f} logged hours have a missing/unrecognized billable flag and are "
+        "excluded from the utilization figures above — flagged for manual review, not assumed."
+    )
+
 st.divider()
 
 
@@ -156,7 +166,7 @@ with col1:
     dept_util = processing.utilization_by(filtered, ["department"]) if "department" in filtered else pd.DataFrame()
     if len(dept_util):
         fig = px.bar(dept_util, x="department", y="utilization_pct", labels={"utilization_pct": "Utilization %"})
-        fig.add_hline(y=70, line_dash="dash", line_color="gray", annotation_text="Target 70%")
+        fig.add_hline(y=threshold, line_dash="dash", line_color="gray", annotation_text=f"Target {threshold}%")
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.info("No data for the current filters.")
@@ -176,19 +186,25 @@ with col3:
     trend = insights.monthly_utilization_trend(filtered)
     if len(trend):
         fig = px.line(trend, x="month", y="utilization_pct", markers=True, labels={"utilization_pct": "Utilization %"})
-        fig.add_hline(y=70, line_dash="dash", line_color="gray", annotation_text="Target 70%")
+        fig.add_hline(y=threshold, line_dash="dash", line_color="gray", annotation_text=f"Target {threshold}%")
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.info("No data for the current filters.")
 
 with col4:
     st.subheader("Top Underutilized Employees")
-    under = insights.underutilized_employees(filtered, employees, threshold=70.0)
+    under = insights.underutilized_employees(filtered, employees, threshold=float(threshold))
     show_cols = [c for c in ["employee_id", "employee_name", "department", "utilization_pct", "gap_to_threshold_pct"] if c in under.columns]
     if len(under):
         st.dataframe(under[show_cols].head(10), use_container_width=True, hide_index=True)
+        st.download_button(
+            "Download full list (CSV)",
+            under[show_cols].to_csv(index=False).encode("utf-8"),
+            file_name="underutilized_employees.csv",
+            mime="text/csv",
+        )
     else:
-        st.success("No employees below the 70% utilization threshold.")
+        st.success(f"No employees below the {threshold}% utilization threshold.")
 
 st.divider()
 
@@ -203,25 +219,35 @@ tab1, tab2, tab3, tab4 = st.tabs(
     ["Overallocated Employees", "Project Staffing", "Department Performance", "Billing Discrepancies"]
 )
 
+def _export_button(df: pd.DataFrame, filename: str, label: str = "Download CSV") -> None:
+    st.download_button(label, df.to_csv(index=False).encode("utf-8"), file_name=filename, mime="text/csv")
+
+
 with tab1:
     over_emp = insights.overallocated_employees(filtered_allocations)
     if len(over_emp):
         over_emp = over_emp.merge(employees, on="employee_id", how="left")
         st.dataframe(over_emp, use_container_width=True, hide_index=True)
+        _export_button(over_emp, "overallocated_employees.csv")
     else:
         st.success("No employees are allocated above 100% capacity.")
 
 with tab2:
     gaps = insights.project_staffing_gaps(filtered_allocations)
     st.dataframe(gaps, use_container_width=True, hide_index=True)
+    if len(gaps):
+        _export_button(gaps, "project_staffing_gaps.csv")
 
 with tab3:
     dept_perf = insights.department_performance(filtered, employees)
     st.dataframe(dept_perf, use_container_width=True, hide_index=True)
+    if len(dept_perf):
+        _export_button(dept_perf, "department_performance.csv")
 
 with tab4:
     discrepancies = insights.billing_discrepancies(filtered, filtered_billing)
     if len(discrepancies):
         st.dataframe(discrepancies, use_container_width=True, hide_index=True)
+        _export_button(discrepancies, "billing_discrepancies.csv")
     else:
         st.success("Logged billable hours reconcile with client billing within 5%.")
