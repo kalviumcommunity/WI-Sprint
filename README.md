@@ -67,7 +67,7 @@ Highlight patterns that may indicate:
 
 ### Management Dashboard
 
-Provide managers with a centralized view of utilization, project allocation,
+Provide managers with a centralized view of utilization, project allocation,and another 
 billing performance, and operational insights.
 
 ---
