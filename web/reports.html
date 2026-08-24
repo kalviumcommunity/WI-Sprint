@@ -3,76 +3,87 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Reports & Export · UtilizationIQ</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231d4ed8'/%3E%3C/svg%3E" />
+<title>Reports &amp; Export · UtilizationIQ</title>
+<meta name="description" content="Build a scoped utilization report, preview it, and export to CSV or PDF." />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f3a5f'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("iq.theme.v1");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
-<style>
-  @media print {
-    .sidenav, .topbar, .page-header, #builder-card, .no-print { display: none !important; }
-    .main { margin-left: 0 !important; }
-    body { background: #fff; }
-  }
-</style>
 </head>
-<body data-page="reports">
-<div class="app-shell">
-  <div id="sidenav"></div>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside id="nav"></aside>
   <div class="main">
-    <div id="topbar"></div>
-    <div class="content">
-      <div class="page-header">
+    <header id="topbar"></header>
+    <main class="content" id="main">
+      <div class="page-head">
         <div>
-          <h1 class="page-title">Reports &amp; Export</h1>
-          <p class="page-subtitle">Build a scoped report, preview it, then export to CSV or print/save as PDF.</p>
+          <div class="page-eyebrow">Reports</div>
+          <h1 class="page-title">Build and export</h1>
+          <p class="page-sub">Pick a scope and the metrics that matter, then hand it to finance as CSV or PDF.</p>
         </div>
       </div>
 
-      <div class="card" id="builder-card" style="margin-bottom:20px;">
-        <h2 class="card__title">Report builder</h2>
-        <div class="form-card">
-          <div class="field-group">
-            <label for="scope-select">Scope</label>
-            <select class="select" id="scope-select" style="width:100%;"></select>
+      <section class="card no-print" id="builder" style="margin-bottom:20px;">
+        <div class="grid-thirds">
+          <div class="field">
+            <label for="scope">Scope</label>
+            <select class="select" id="scope"></select>
           </div>
-          <div class="field-group">
+          <div class="field">
             <label>Period</label>
-            <div id="period-readout" style="font-size:13px; padding:6px 0; color:var(--color-text-secondary);"></div>
+            <div class="field__static" id="period-readout">—</div>
           </div>
-          <div class="field-group">
+          <div class="field">
             <label>Metrics</label>
-            <div id="metric-checks"></div>
+            <div id="metrics"></div>
           </div>
         </div>
-        <div style="display:flex; gap:8px; margin-top:6px;">
-          <button class="btn btn--primary" id="generate-btn">Generate report</button>
-          <button class="btn btn--secondary" id="csv-btn">Export CSV</button>
-          <button class="btn btn--secondary" id="pdf-btn">Print / Save as PDF</button>
+        <div class="btn-row">
+          <button class="btn btn--primary" id="generate">Generate report</button>
+          <button class="btn btn--ghost" id="csv">Export CSV</button>
+          <button class="btn btn--ghost" id="pdf">Print / Save as PDF</button>
         </div>
-      </div>
+      </section>
 
-      <div class="grid-2" style="grid-template-columns: 1fr 320px;">
-        <div class="card">
-          <h2 class="card__title" id="preview-title">Preview</h2>
-          <div class="table-wrap">
-            <table class="data-table" id="report-table">
-              <thead><tr id="report-thead-row"></tr></thead>
-              <tbody id="report-tbody"></tbody>
-              <tfoot id="report-tfoot"></tfoot>
+      <div class="grid-split">
+        <section class="card card--flush">
+          <div class="card__head">
+            <h2 class="card__title" id="preview-title">Preview</h2>
+            <span class="card__note" id="preview-note"></span>
+          </div>
+          <div class="table-scroll">
+            <table class="tbl" id="tbl">
+              <thead><tr id="thead-row"></tr></thead>
+              <tbody id="tbody"></tbody>
+              <tfoot id="tfoot"></tfoot>
             </table>
           </div>
-        </div>
-        <div class="card no-print">
-          <h2 class="card__title">Recently generated</h2>
-          <ul class="attention-list" id="recent-list" style="font-size:13px;"></ul>
-        </div>
+        </section>
+
+        <section class="card no-print">
+          <div class="card__head">
+            <h2 class="card__title">Recently generated</h2>
+          </div>
+          <ul class="attn" id="recent"></ul>
+        </section>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 
+<script src="assets/data/seed-data.js"></script>
 <script src="assets/js/iq-data.js"></script>
 <script src="assets/js/iq-charts.js"></script>
 <script src="assets/js/iq-table.js"></script>

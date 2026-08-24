@@ -1,0 +1,55 @@
+name: Deploy site to GitHub Pages
+
+# Publishes web/ to GitHub Pages. Requires Pages to be enabled once, with
+# Settings > Pages > Source set to "GitHub Actions" (needs repo admin).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify the site is self-contained
+        run: |
+          # The site must not fetch anything at runtime - it has to render
+          # identically from file://, Pages, or any static host.
+          if grep -rn "fetch(\|XMLHttpRequest" web/assets/js/; then
+            echo "::error::Runtime network call found in web/assets/js - the site must stay self-contained."
+            exit 1
+          fi
+          test -f web/index.html
+          test -f web/assets/data/seed-data.js
+          echo "OK: no runtime fetches, entry point and seed present."
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

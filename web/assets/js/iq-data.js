@@ -3,16 +3,16 @@
 
 const IQ = (() => {
   const STATE_KEY = "iq.filters.v1";
-  let seedPromise = null;
 
+  /* Seed data ships as a plain script (assets/data/seed-data.js) that assigns
+     window.IQ_SEED, so the site renders identically over http(s) and when the
+     files are opened directly off disk. Kept promise-returning so callers
+     don't care where it came from. */
   function loadSeed() {
-    if (!seedPromise) {
-      seedPromise = fetch("assets/data/seed.json").then((r) => {
-        if (!r.ok) throw new Error(`seed.json ${r.status}`);
-        return r.json();
-      });
+    if (!window.IQ_SEED) {
+      return Promise.reject(new Error("seed-data.js did not load; window.IQ_SEED is undefined"));
     }
-    return seedPromise;
+    return Promise.resolve(window.IQ_SEED);
   }
 
   function defaultState() {
