@@ -21,7 +21,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  preflight:
+    # Neither this workflow's GITHUB_TOKEN nor a non-admin PAT can create the
+    # Pages site on this org ("Resource not accessible by integration"), so a
+    # human with repo-admin has to switch it on once. Until then, say so
+    # plainly and skip instead of failing red on every push.
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Pages not enabled::Skipping deploy. A repo admin must set Settings > Pages > Source to 'GitHub Actions', then re-run this workflow."
+          fi
+
   build:
+    needs: preflight
+    if: needs.preflight.outputs.ready == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
