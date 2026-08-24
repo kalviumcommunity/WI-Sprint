@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reports & Export · UtilizationIQ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231d4ed8'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  @media print {
+    .sidenav, .topbar, .page-header, #builder-card, .no-print { display: none !important; }
+    .main { margin-left: 0 !important; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body data-page="reports">
+<div class="app-shell">
+  <div id="sidenav"></div>
+  <div class="main">
+    <div id="topbar"></div>
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reports &amp; Export</h1>
+          <p class="page-subtitle">Build a scoped report, preview it, then export to CSV or print/save as PDF.</p>
+        </div>
+      </div>
+
+      <div class="card" id="builder-card" style="margin-bottom:20px;">
+        <h2 class="card__title">Report builder</h2>
+        <div class="form-card">
+          <div class="field-group">
+            <label for="scope-select">Scope</label>
+            <select class="select" id="scope-select" style="width:100%;"></select>
+          </div>
+          <div class="field-group">
+            <label>Period</label>
+            <div id="period-readout" style="font-size:13px; padding:6px 0; color:var(--color-text-secondary);"></div>
+          </div>
+          <div class="field-group">
+            <label>Metrics</label>
+            <div id="metric-checks"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:6px;">
+          <button class="btn btn--primary" id="generate-btn">Generate report</button>
+          <button class="btn btn--secondary" id="csv-btn">Export CSV</button>
+          <button class="btn btn--secondary" id="pdf-btn">Print / Save as PDF</button>
+        </div>
+      </div>
+
+      <div class="grid-2" style="grid-template-columns: 1fr 320px;">
+        <div class="card">
+          <h2 class="card__title" id="preview-title">Preview</h2>
+          <div class="table-wrap">
+            <table class="data-table" id="report-table">
+              <thead><tr id="report-thead-row"></tr></thead>
+              <tbody id="report-tbody"></tbody>
+              <tfoot id="report-tfoot"></tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="card no-print">
+          <h2 class="card__title">Recently generated</h2>
+          <ul class="attention-list" id="recent-list" style="font-size:13px;"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/iq-data.js"></script>
+<script src="assets/js/iq-charts.js"></script>
+<script src="assets/js/iq-table.js"></script>
+<script src="assets/js/iq-findings.js"></script>
+<script src="assets/js/iq-shell.js"></script>
+<script src="assets/js/page-reports.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Billing Reconciliation · UtilizationIQ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231d4ed8'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body data-page="reconciliation">
+<div class="app-shell">
+  <div id="sidenav"></div>
+  <div class="main">
+    <div id="topbar"></div>
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Billing Reconciliation</h1>
+          <p class="page-subtitle">Logged hours vs. billed hours vs. invoiced amount, per client/project. Click a row for the weekly detail.</p>
+        </div>
+        <button class="btn btn--secondary" id="export-btn">Export CSV</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table" id="recon-table">
+            <thead>
+              <tr>
+                <th data-key="client" data-type="text">Client</th>
+                <th data-key="project" data-type="text">Project</th>
+                <th data-key="loggedHours" class="is-num">Hours logged</th>
+                <th data-key="invoicedHours" class="is-num">Hours billed</th>
+                <th data-key="invoicedAmount" class="is-num">Amount invoiced</th>
+                <th data-key="variance" class="is-num">Variance ($)</th>
+                <th data-key="variancePct" class="is-num">Variance (%)</th>
+                <th data-key="statusRank" class="is-num">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recon-tbody">
+              <tr><td colspan="8"><div class="skeleton" style="height:260px;"></div></td></tr>
+            </tbody>
+            <tfoot id="recon-tfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/iq-data.js"></script>
+<script src="assets/js/iq-charts.js"></script>
+<script src="assets/js/iq-table.js"></script>
+<script src="assets/js/iq-findings.js"></script>
+<script src="assets/js/iq-shell.js"></script>
+<script src="assets/js/page-reconciliation.js"></script>
+</body>
+</html>

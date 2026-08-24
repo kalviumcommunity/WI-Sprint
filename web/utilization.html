@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Utilization Breakdown · UtilizationIQ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231d4ed8'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body data-page="utilization">
+<div class="app-shell">
+  <div id="sidenav"></div>
+  <div class="main">
+    <div id="topbar"></div>
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Utilization Breakdown</h1>
+          <p class="page-subtitle">Every consultant in scope: billable vs non-billable split and utilization against target.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="segmented" id="group-toggle">
+            <button type="button" data-group="department" class="is-active">Group: Department</button>
+            <button type="button" data-group="project">Group: Project</button>
+          </div>
+          <button class="btn btn--secondary" id="export-btn">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table" id="util-table">
+            <thead>
+              <tr>
+                <th data-key="name" data-type="text">Name</th>
+                <th data-key="role" data-type="text">Role</th>
+                <th data-key="department" data-type="text">Department</th>
+                <th data-key="projectLabel" data-type="text">Project</th>
+                <th data-key="billable" class="is-num">Billable hrs</th>
+                <th data-key="non_billable" class="is-num">Non-billable hrs</th>
+                <th data-key="available" class="is-num">Available hrs</th>
+                <th class="is-num">Split</th>
+                <th data-key="utilization_pct" class="is-num">Utilization %</th>
+                <th data-key="statusRank" class="is-num">Status</th>
+              </tr>
+            </thead>
+            <tbody id="util-tbody">
+              <tr><td colspan="10"><div class="skeleton" style="height:220px;"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/iq-data.js"></script>
+<script src="assets/js/iq-charts.js"></script>
+<script src="assets/js/iq-table.js"></script>
+<script src="assets/js/iq-findings.js"></script>
+<script src="assets/js/iq-shell.js"></script>
+<script src="assets/js/page-utilization.js"></script>
+</body>
+</html>
