@@ -38,7 +38,12 @@ jobs:
           test -f web/assets/data/seed-data.js
           echo "OK: no runtime fetches, entry point and seed present."
 
+      # enablement: true lets the workflow's own GITHUB_TOKEN (which carries
+      # pages: write above) turn Pages on, so the first deploy does not need a
+      # human with repo-admin to flip the setting by hand first.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
