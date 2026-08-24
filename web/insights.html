@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inefficiency Insights · UtilizationIQ</title>
+<meta name="description" content="Computed operational findings ranked by cost impact, each showing the evidence that triggered it." />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f3a5f'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("iq.theme.v1");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css?v=1a3f8248b9" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside id="nav"></aside>
+  <div class="main">
+    <header id="topbar"></header>
+    <main class="content" id="main">
+      <div class="page-head">
+        <div>
+          <div class="page-eyebrow">Insights</div>
+          <h1 class="page-title">What the numbers flagged</h1>
+          <p class="page-sub">Findings computed from logged hours, allocations, and invoices — ranked by cost. Open any row for the arithmetic behind it.</p>
+        </div>
+        <div class="topbar__group">
+          <div class="seg" id="filter-toggle" role="group" aria-label="Filter findings by status">
+            <button type="button" data-filter="open" class="is-active">Open</button>
+            <button type="button" data-filter="all">All</button>
+          </div>
+          <button class="btn btn--ghost" id="export">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8v8.4M4.8 7l3.2 3.2L11.2 7M2.4 13.2h11.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+
+      <section class="grid-thirds" id="summary" style="margin-bottom:20px;">
+        <div class="card"><div class="sk" style="height:56px"></div></div>
+        <div class="card"><div class="sk" style="height:56px"></div></div>
+        <div class="card"><div class="sk" style="height:56px"></div></div>
+      </section>
+
+      <section class="card card--flush">
+        <div class="table-scroll">
+          <table class="tbl" id="tbl">
+            <thead>
+              <tr>
+                <th data-key="type" data-type="text">Type</th>
+                <th data-key="title" data-type="text">Finding</th>
+                <th data-key="costImpact" class="r">Cost impact</th>
+                <th data-key="detectedDate" data-type="text" class="r">Detected</th>
+                <th data-key="statusOrder" class="r">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr><td colspan="5"><div class="sk" style="height:300px"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="assets/data/seed-data.js?v=2fee18a40a"></script>
+<script src="assets/js/iq-data.js?v=be313db802"></script>
+<script src="assets/js/iq-charts.js?v=32ebfcb5f8"></script>
+<script src="assets/js/iq-table.js?v=6208e90405"></script>
+<script src="assets/js/iq-findings.js?v=40341b7593"></script>
+<script src="assets/js/iq-shell.js?v=d49e5a0b12"></script>
+<script src="assets/js/page-insights.js?v=0adf3aba2e"></script>
+</body>
+</html>

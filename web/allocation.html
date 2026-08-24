@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Allocation · UtilizationIQ</title>
+<meta name="description" content="Planned versus actual staffing per project, over-allocation flags, and who is on the bench." />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f3a5f'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("iq.theme.v1");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css?v=1a3f8248b9" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside id="nav"></aside>
+  <div class="main">
+    <header id="topbar"></header>
+    <main class="content" id="main">
+      <div class="page-head">
+        <div>
+          <div class="page-eyebrow">Allocation</div>
+          <h1 class="page-title">Planned against actual</h1>
+          <p class="page-sub">Where staffing drifted from the plan. Open a row to see the individual assignments behind the gap.</p>
+        </div>
+      </div>
+
+      <section class="card card--flush" style="margin-bottom:20px;">
+        <div class="table-scroll">
+          <table class="tbl" id="tbl">
+            <thead>
+              <tr>
+                <th data-key="name" data-type="text">Project</th>
+                <th data-key="client" data-type="text">Client</th>
+                <th data-key="department" data-type="text">Dept</th>
+                <th data-key="headcount" class="r">People</th>
+                <th data-key="planned" class="r">Planned</th>
+                <th data-key="actual" class="r">Actual</th>
+                <th data-key="gap" class="r">Gap</th>
+                <th data-key="statusRank" class="r">Status</th>
+                <th data-key="end_date" data-type="text" class="r">Ends</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr><td colspan="9"><div class="sk" style="height:240px"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="grid-split">
+        <section class="card card--flush">
+          <div class="card__head">
+            <h2 class="card__title">Over 100% of capacity</h2>
+            <span class="card__note">Burnout and margin risk</span>
+          </div>
+          <div class="table-scroll">
+            <table class="tbl">
+              <thead><tr><th>Consultant</th><th>Department</th><th class="r">Allocated</th><th class="r">Over by</th></tr></thead>
+              <tbody id="over-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card card--flush">
+          <div class="card__head">
+            <h2 class="card__title">On the bench</h2>
+            <span class="card__note">0% allocated</span>
+          </div>
+          <div class="table-scroll">
+            <table class="tbl">
+              <thead><tr><th>Consultant</th><th>Dept</th><th class="r">Rate</th></tr></thead>
+              <tbody id="bench-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="assets/data/seed-data.js?v=2fee18a40a"></script>
+<script src="assets/js/iq-data.js?v=be313db802"></script>
+<script src="assets/js/iq-charts.js?v=32ebfcb5f8"></script>
+<script src="assets/js/iq-table.js?v=6208e90405"></script>
+<script src="assets/js/iq-findings.js?v=40341b7593"></script>
+<script src="assets/js/iq-shell.js?v=d49e5a0b12"></script>
+<script src="assets/js/page-allocation.js?v=503c13b938"></script>
+</body>
+</html>
