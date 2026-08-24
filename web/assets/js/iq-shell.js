@@ -152,9 +152,28 @@
       renderTopbar(seed);
     });
     document.getElementById("cmdk-open").addEventListener("click", openPalette);
-    document.getElementById("nav-toggle").addEventListener("click", () => {
-      document.getElementById("nav").classList.toggle("is-open");
-    });
+    document.getElementById("nav-toggle").addEventListener("click", () => setNavOpen(!isNavOpen()));
+  }
+
+  /* Mobile drawer.
+     The class drives styling and the CSS transition supplies the slide, but the
+     final position is also written inline: a transition that never advances
+     (some embedded/headless renderers pin one at currentTime 0) would otherwise
+     strand the drawer off-screen and leave navigation unreachable on a phone.
+     Inline wins the cascade, so the open/closed state is guaranteed even if
+     nothing animates. */
+  const navEl = () => document.getElementById("nav");
+  const isNavOpen = () => navEl().classList.contains("is-open");
+
+  function setNavOpen(open) {
+    const nav = navEl();
+    nav.classList.toggle("is-open", open);
+    nav.style.transform = open ? "translateX(0)" : "";
+    const btn = document.getElementById("nav-toggle");
+    if (btn) {
+      btn.setAttribute("aria-expanded", String(open));
+      btn.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    }
   }
 
   /* ------------------------------------------------------ command palette */
@@ -252,8 +271,23 @@
           if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
             e.preventDefault();
             openPalette();
+          } else if (e.key === "Escape" && isNavOpen()) {
+            setNavOpen(false);
           }
         });
+
+        // Tapping a destination or the page behind the drawer should dismiss it.
+        navEl().addEventListener("click", (e) => {
+          if (e.target.closest("a")) setNavOpen(false);
+        });
+        document.querySelector(".main").addEventListener("click", (e) => {
+          if (isNavOpen() && !e.target.closest("#nav-toggle")) setNavOpen(false);
+        });
+        // Leaving mobile widths must not leave a stale inline transform behind.
+        window.matchMedia("(max-width: 860px)").addEventListener("change", (ev) => {
+          if (!ev.matches) setNavOpen(false);
+        });
+
         return seed;
       });
     },
