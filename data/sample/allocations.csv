@@ -1,0 +1,70 @@
+project_id,project_name,department,employee_id,role,planned_allocation_pct,actual_allocation_pct,start_date,end_date
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP001,Senior Consultant,100,95,2026-05-15,2026-09-08
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP002,Analyst,100,115,2026-05-25,2026-09-12
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP003,Analyst,100,115,2026-05-15,2026-09-08
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP004,Analyst,26,11,2026-05-24,2026-10-12
+PRJ04,Brightline Telecom Engagement 4,Engineering,EMP004,Analyst,74,99,2026-05-07,2026-09-30
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP005,Analyst,79,79,2026-05-11,2026-10-11
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP005,Analyst,21,16,2026-05-25,2026-09-12
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP006,Consultant,100,100,2026-05-19,2026-09-26
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP007,Consultant,30,40,2026-05-25,2026-09-12
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP007,Consultant,20,30,2026-05-05,2026-09-21
+PRJ08,Northbridge Retail Engagement 8,Strategy,EMP007,Consultant,50,50,2026-05-20,2026-10-16
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP008,Manager,38,48,2026-05-05,2026-09-21
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP008,Manager,42,67,2026-05-11,2026-10-11
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP008,Manager,20,35,2026-05-25,2026-09-12
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP009,Consultant,100,100,2026-05-25,2026-09-12
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP010,Consultant,67,92,2026-05-05,2026-09-21
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP010,Consultant,20,25,2026-05-11,2026-10-11
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP010,Consultant,13,0,2026-05-19,2026-09-26
+PRJ04,Brightline Telecom Engagement 4,Engineering,EMP011,Analyst,100,125,2026-05-07,2026-09-30
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP012,Analyst,30,15,2026-05-11,2026-10-11
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP012,Analyst,50,75,2026-05-25,2026-09-12
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP012,Analyst,20,10,2026-05-05,2026-09-21
+PRJ05,Ferro Steelworks Engagement 5,Engineering,EMP013,Senior Consultant,58,48,2026-05-29,2026-09-06
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP013,Senior Consultant,22,22,2026-05-15,2026-09-08
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP013,Senior Consultant,20,30,2026-05-11,2026-10-11
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP014,Analyst,100,100,2026-05-19,2026-09-26
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP015,Senior Consultant,59,49,2026-05-15,2026-09-08
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP015,Senior Consultant,41,51,2026-05-24,2026-10-12
+PRJ04,Brightline Telecom Engagement 4,Engineering,EMP016,Analyst,53,58,2026-05-07,2026-09-30
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP016,Analyst,47,47,2026-05-24,2026-10-12
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP017,Manager,100,100,2026-05-19,2026-09-26
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP018,Analyst,100,100,2026-05-19,2026-09-26
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP019,Manager,100,85,2026-05-25,2026-09-12
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP020,Analyst,100,90,2026-05-19,2026-09-26
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP021,Senior Consultant,100,125,2026-05-19,2026-09-26
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP022,Consultant,100,90,2026-05-05,2026-09-21
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP023,Senior Consultant,38,33,2026-05-24,2026-10-12
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP023,Senior Consultant,34,59,2026-05-05,2026-09-21
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP023,Senior Consultant,28,28,2026-05-25,2026-09-12
+PRJ05,Ferro Steelworks Engagement 5,Engineering,EMP024,Consultant,20,45,2026-05-29,2026-09-06
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP024,Consultant,80,80,2026-05-15,2026-09-08
+PRJ08,Northbridge Retail Engagement 8,Strategy,EMP025,Manager,80,75,2026-05-20,2026-10-16
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP025,Manager,20,10,2026-05-25,2026-09-12
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP025,Manager,10,0,2026-05-11,2026-10-11
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP026,Manager,37,37,2026-05-11,2026-10-11
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP026,Manager,63,63,2026-05-25,2026-09-12
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP027,Analyst,63,63,2026-05-24,2026-10-12
+PRJ03,Brightline Telecom Engagement 3,Engineering,EMP027,Analyst,37,62,2026-05-15,2026-09-08
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP028,Manager,100,90,2026-05-19,2026-09-26
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP029,Manager,22,7,2026-05-24,2026-10-12
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP029,Manager,78,83,2026-05-19,2026-09-26
+PRJ05,Ferro Steelworks Engagement 5,Engineering,EMP030,Analyst,30,45,2026-05-29,2026-09-06
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP030,Analyst,70,95,2026-05-11,2026-10-11
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP031,Manager,20,10,2026-05-05,2026-09-21
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP031,Manager,80,70,2026-05-11,2026-10-11
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP032,Analyst,54,39,2026-05-19,2026-09-26
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP032,Analyst,26,31,2026-05-24,2026-10-12
+PRJ09,Halcyon Insurance Engagement 9,Strategy,EMP032,Analyst,20,45,2026-05-25,2026-09-12
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP033,Analyst,100,85,2026-05-05,2026-09-21
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP034,Analyst,100,105,2026-05-24,2026-10-12
+PRJ06,Ferro Steelworks Engagement 6,Design,EMP035,Analyst,100,90,2026-05-19,2026-09-26
+PRJ04,Brightline Telecom Engagement 4,Engineering,EMP036,Senior Consultant,100,110,2026-05-07,2026-09-30
+PRJ05,Ferro Steelworks Engagement 5,Engineering,EMP037,Principal,79,79,2026-05-29,2026-09-06
+PRJ07,Brightline Telecom Engagement 7,Strategy,EMP037,Principal,20,15,2026-05-11,2026-10-11
+PRJ01,Northbridge Retail Engagement 1,Strategy,EMP037,Principal,10,20,2026-05-05,2026-09-21
+PRJ04,Brightline Telecom Engagement 4,Engineering,EMP038,Analyst,100,110,2026-05-07,2026-09-30
+PRJ05,Ferro Steelworks Engagement 5,Engineering,EMP039,Senior Consultant,37,32,2026-05-29,2026-09-06
+PRJ02,Northbridge Retail Engagement 2,Engineering,EMP039,Senior Consultant,63,53,2026-05-24,2026-10-12
+PRJ08,Northbridge Retail Engagement 8,Strategy,EMP040,Analyst,100,115,2026-05-20,2026-10-16
