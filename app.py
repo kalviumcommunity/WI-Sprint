@@ -89,9 +89,9 @@ st.sidebar.divider()
 st.sidebar.subheader("Filters")
 
 dept_options = sorted(timesheets["department"].dropna().unique()) if "department" in timesheets else []
-proj_options = sorted(timesheets["project_id"].dropna().unique())
+proj_options = sorted(set(timesheets["project_id"]) | set(allocations["project_id"]) | set(billing["project_id"]))
 emp_options = sorted(employees["employee_id"].dropna().unique())
-month_options = sorted(timesheets["month"].dropna().unique())
+month_options = sorted(set(timesheets["month"]) | set(billing["month"]))
 
 f_department = st.sidebar.multiselect("Department", dept_options)
 f_project = st.sidebar.multiselect("Project", proj_options)
@@ -111,13 +111,10 @@ if f_employee:
 if f_month:
     filtered = filtered[filtered["month"].isin(f_month)]
 
-filtered_allocations = allocations.copy()
-if f_department and "department" in filtered_allocations:
-    filtered_allocations = filtered_allocations[filtered_allocations["department"].isin(f_department)]
-if f_project:
-    filtered_allocations = filtered_allocations[filtered_allocations["project_id"].isin(f_project)]
-if f_employee:
-    filtered_allocations = filtered_allocations[filtered_allocations["employee_id"].isin(f_employee)]
+filtered_allocations = processing.filter_allocations(
+    allocations, employees, departments=f_department, projects=f_project,
+    employee_ids=f_employee, months=f_month,
+)
 
 filtered_billing = billing.copy()
 if f_project:
@@ -125,6 +122,7 @@ if f_project:
 if f_month:
     filtered_billing = filtered_billing[filtered_billing["month"].isin(f_month)]
 
+people_filter_active = bool(f_department or f_employee)
 
 # ---------------------------------------------------------------------------
 # KPI cards
@@ -135,22 +133,29 @@ st.title("Employee Utilization Intelligence Dashboard")
 overall = processing.utilization_by(filtered, [])
 billable_hours = float(overall["billable_hours"].iloc[0]) if len(overall) else 0.0
 non_billable_hours = float(overall["non_billable_hours"].iloc[0]) if len(overall) else 0.0
-utilization_pct = float(overall["utilization_pct"].iloc[0]) if len(overall) else 0.0
+utilization_pct = float(overall["utilization_pct"].iloc[0]) if len(overall) else float("nan")
+review_hours = float(overall["review_hours"].iloc[0]) if len(overall) else 0.0
 total_revenue = float(filtered_billing["invoiced_amount"].sum())
 
-k1, k2, k3, k4, k5 = st.columns(5)
+k1, k2, k3, k4, k5, k6 = st.columns(6)
 k1.metric("Total Employees", f"{filtered['employee_id'].nunique():,}")
 k2.metric("Total Billable Hours", f"{billable_hours:,.1f}")
 k3.metric("Total Non-Billable Hours", f"{non_billable_hours:,.1f}")
-k4.metric("Employee Utilization", f"{utilization_pct:,.1f}%")
-k5.metric("Total Revenue", f"${total_revenue:,.0f}")
+k4.metric("Employee Utilization", f"{utilization_pct:,.1f}%" if pd.notna(utilization_pct) else "Not rated")
+k5.metric("Total Revenue", "Unavailable" if people_filter_active else f"${total_revenue:,.0f}")
+k6.metric("Hours Needing Review", f"{review_hours:,.1f}")
 
-review_hours = float(filtered.loc[filtered["needs_review"], "hours"].sum())
+if people_filter_active:
+    st.caption("Revenue and invoice comparisons are unavailable with employee or department filters. "
+               "Invoices contain project and month totals, without a breakdown by person. "
+               "Clear those filters to compare the same scope.")
 if review_hours > 0:
     st.caption(
         f"⚠ {review_hours:,.1f} logged hours have a missing/unrecognized billable flag and are "
         "excluded from the utilization figures above — flagged for manual review, not assumed."
     )
+    with st.expander("Hours needing review"):
+        st.dataframe(filtered[filtered["needs_review"]], use_container_width=True, hide_index=True)
 
 st.divider()
 
@@ -224,6 +229,7 @@ def _export_button(df: pd.DataFrame, filename: str, label: str = "Download CSV")
 
 
 with tab1:
+    st.caption("Allocation totals cover concurrent assignments within each displayed date range.")
     over_emp = insights.overallocated_employees(filtered_allocations)
     if len(over_emp):
         over_emp = over_emp.merge(employees, on="employee_id", how="left")
@@ -233,6 +239,7 @@ with tab1:
         st.success("No employees are allocated above 100% capacity.")
 
 with tab2:
+    st.caption("Staffing totals are shown by date range; sequential assignments are counted separately.")
     gaps = insights.project_staffing_gaps(filtered_allocations)
     st.dataframe(gaps, use_container_width=True, hide_index=True)
     if len(gaps):
@@ -245,9 +252,12 @@ with tab3:
         _export_button(dept_perf, "department_performance.csv")
 
 with tab4:
-    discrepancies = insights.billing_discrepancies(filtered, filtered_billing)
-    if len(discrepancies):
-        st.dataframe(discrepancies, use_container_width=True, hide_index=True)
-        _export_button(discrepancies, "billing_discrepancies.csv")
+    if people_filter_active:
+        st.info("Clear the employee and department filters to reconcile project invoices against all matching hours.")
     else:
-        st.success("Logged billable hours reconcile with client billing within 5%.")
+        discrepancies = insights.billing_discrepancies(filtered, filtered_billing)
+        if len(discrepancies):
+            st.dataframe(discrepancies, use_container_width=True, hide_index=True)
+            _export_button(discrepancies, "billing_discrepancies.csv")
+        else:
+            st.success("Logged billable hours reconcile with client billing within 5%.")

@@ -96,6 +96,14 @@ def validate_file(file, filename: str, dataset_type: str) -> ValidationResult:
         )
         return ValidationResult(False, dataset_type, None, errors)
 
+    for column in ("employee_id", "project_id"):
+        if column in required:
+            missing_ids = df[column].astype("string").str.strip().fillna("").eq("")
+            errors.extend(
+                {"row": idx, "column": column, "message": "An identifier is required."}
+                for idx in df.index[missing_ids]
+            )
+
     if dataset_type == "timesheets":
         errors.extend(_check_numeric(df, "hours"))
         errors.extend(_check_dates(df, "date"))
@@ -104,15 +112,22 @@ def validate_file(file, filename: str, dataset_type: str) -> ValidationResult:
         errors.extend(_check_numeric(df, "actual_allocation_pct"))
         errors.extend(_check_dates(df, "start_date"))
         errors.extend(_check_dates(df, "end_date"))
+        starts = pd.to_datetime(df["start_date"], errors="coerce", format="mixed")
+        ends = pd.to_datetime(df["end_date"], errors="coerce", format="mixed")
+        errors.extend(
+            {"row": idx, "column": "end_date", "message": "End date precedes start date."}
+            for idx in df.index[ends < starts]
+        )
     elif dataset_type == "billing":
         errors.extend(_check_numeric(df, "invoiced_hours"))
         errors.extend(_check_numeric(df, "invoiced_amount"))
+        errors.extend(_check_dates(df, "month"))
 
     return ValidationResult(is_valid=len(errors) == 0, dataset_type=dataset_type, dataframe=df, errors=errors)
 
 
 def _check_numeric(df: pd.DataFrame, column: str) -> list[dict]:
-    bad_rows = df[pd.to_numeric(df[column], errors="coerce").isna() & df[column].notna()]
+    bad_rows = df[pd.to_numeric(df[column], errors="coerce").isna()]
     return [
         {"row": idx, "column": column, "message": f"Value '{val}' is not numeric."}
         for idx, val in bad_rows[column].items()
@@ -120,8 +135,8 @@ def _check_numeric(df: pd.DataFrame, column: str) -> list[dict]:
 
 
 def _check_dates(df: pd.DataFrame, column: str) -> list[dict]:
-    parsed = pd.to_datetime(df[column], errors="coerce")
-    bad_rows = df[parsed.isna() & df[column].notna()]
+    parsed = pd.to_datetime(df[column], errors="coerce", format="mixed")
+    bad_rows = df[parsed.isna()]
     return [
         {"row": idx, "column": column, "message": f"Value '{val}' is not a recognizable date."}
         for idx, val in bad_rows[column].items()

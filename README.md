@@ -31,3 +31,26 @@ columns before anything is processed.
 the selected period. Timesheet rows with a missing billable flag aren't
 counted either way — they show up as "needs review" instead of being
 silently assumed billable or not.
+
+Missing identifiers, required numbers, and invalid dates or billing months
+produce row-level upload errors. Optional departments appear as `Unassigned`.
+
+Allocation start and end dates are inclusive. Staffing and overallocation
+results report concurrent assignments for each date range; selecting months
+clips those ranges to the selected periods.
+
+Invoices are project/month totals. Revenue and billing reconciliation are
+unavailable while employee or department filters are active because these
+invoices do not identify each person's share. Project and month filters can
+still be used for invoice comparisons. An invoice with no matching billable
+hours is always flagged rather than reported as reconciled.
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest tests
+```
+
+The tests cover invalid uploads, review-only groups, concurrent allocation
+periods, invoice-only records, and dashboard filter behavior.
